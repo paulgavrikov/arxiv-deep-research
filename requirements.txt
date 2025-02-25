@@ -1,0 +1,2 @@
+pymupdf4llm
+google-genai
