@@ -1,5 +1,10 @@
 # arxiv-deep-research
 
+<div style="text-align: center;">
+    <img src="./assets/header.jpg" width="50%">
+</div>
+
+
 This is a "Deep Research"-style agent, that attempts to generate a report answering a given research question using papers published on arxiv.org. This is achieved via API calls to the Google GenAI endpoint (Gemini or Gemma).
 
 This is a simple hobby project, created in a single evening. It's important to note that it's not intended to compete with the sophisticated deep research agents developed by companies like Google, OpenAI, or X.ai. I'm also uncertain how closely it aligns with actual "deep research" methodologies. 
