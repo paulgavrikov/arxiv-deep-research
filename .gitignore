@@ -173,3 +173,5 @@ cython_debug/
 keys.json
 reports/
 .pdfs/
+
+.DS_store
