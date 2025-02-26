@@ -33,9 +33,20 @@ You can also resume a research session (or simply recreate the final report, e.g
 python arxiv_research.py -resume <PATH_TO_SESSION>/reading_list.json
 ```
 
+## Example reports
+
+- ["How do I make very small LVLMs that generalize well?"](examples/20250225_012735//REPORT.md)
+- ["What are the latest trends in adversarial robustness for image classification? Only consider papers from the last 2 years."](examples/20250224_163459/REPORT.md)
+- ["signal processing flaws of convolutional neural networks"](examples/20250224_234127/REPORT.md)
+- ["What is the best kernel size for convolutional neural networks?"](examples/20250226_222918/REPORT.md)
+
 ## Known issues
 - Poor error handling, especially when API calls or PDF downloads fail
 - Only works with Gemini
 - Output path not configurable
 - Gemini may hallucinate paper ID's that do not exist, which currently results in a crash due to a failures in lookups
-- Citation keys will typically be from the set of read papers but the wrong one may be hallucinated
+- Citation keys may be hallucinated
+
+## Disclaimer
+
+Please remember, this is an AI research assistant. Double-check important information and do not trust summaries or citations blindly!
