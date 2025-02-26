@@ -23,7 +23,7 @@ def parse_arxiv_feed(xml_feed):
     feed_entries = {}
 
     for entry in entries:
-        paper_id = entry.getElementsByTagName('id')[0].firstChild.nodeValue.replace("http://arxiv.org/abs/", "").split("v")[0]
+        paper_id = entry.getElementsByTagName('id')[0].firstChild.nodeValue.replace("http://arxiv.org/abs/", "")
         title = entry.getElementsByTagName('title')[0].firstChild.nodeValue
         published = entry.getElementsByTagName('published')[0].firstChild.nodeValue
         updated = entry.getElementsByTagName('updated')[0].firstChild.nodeValue

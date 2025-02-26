@@ -13,8 +13,6 @@ from multiprocessing import Pool
 logging.basicConfig(level=logging.INFO)
 
 
-MODEL_NAME = "gemini-2.0-flash-exp"
-
 PROMPT_INITIAL = """You are a researcher assistant. Given a research topic or question, your goal is to generate search queries to find relevant papers on arxiv.org. First think step-by-step what information is needed to answer the research question. Then generate search queries to find relevant papers on arxiv.org.
 Provide your answer in the following json format:
 {
@@ -142,7 +140,7 @@ def read_papers(reading_list, data_workers=8):
 
                 # update reading list    
                 json.dump(
-                    reading_list, open(os.path.join(session_id, "reading_list.json"), "w"), indent=2
+                    reading_list, open(os.path.join("reports", session_id, "reading_list.json"), "w"), indent=2
                 )     
             except Exception as e:
                 logging.error(f"Error reading paper {paper_id}: {e}")
@@ -247,6 +245,12 @@ if __name__ == "__main__":
         help="Maximum number of papers to consider",
         default=150,
     )
+    parser.add_argument(
+        "--model",
+        type=str,
+        help="Google model to use for generating content",
+        default="gemini-2.0-flash-exp",
+    )
 
     # "What are the latest trends in adversarial robustness for image classification? Only consider papers from the last 2 years."
 
@@ -255,9 +259,9 @@ if __name__ == "__main__":
     if args.research_question is not None and args.resume is not None:
         logging.warning("Both research question and resume session provided. Ignoring research question.")
 
-    key_store = json.load(open("keys.json"))
-    GEMINI_API_KEY = key_store["GEMINI_API_KEY"]
-    client = genai.Client(api_key=GEMINI_API_KEY)
+    MODEL_NAME = args.model
+
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
     # Extract relevant papers from search results
     research_question = args.research_question
@@ -280,8 +284,8 @@ if __name__ == "__main__":
             skip_queries_check = True
     else:
         session_id = datetime.now().strftime("%Y%m%d_%H%M%S")
-        os.makedirs(session_id, exist_ok=True)
-        json.dump(reading_list, open(os.path.join(session_id, "reading_list.json"), "w"), indent=2)
+        os.makedirs(os.path.join("reports", session_id), exist_ok=True)
+        json.dump(reading_list, open(os.path.join("reports", session_id, "reading_list.json"), "w"), indent=2)
         # Generate search queries if this is a new session
         queries_to_run = llm_generate_queries(research_question)
         logging.info(f"Generated queries: {queries_to_run}")
@@ -305,17 +309,26 @@ if __name__ == "__main__":
                 
             # add each paper
             for paper_stub in relevant_papers:
-                paper_id = paper_stub["id"].split("v")[0]
+                paper_id = paper_stub["id"]
                 if paper_id not in reading_list["papers"].keys():
-                    paper_stub["title"] = result_feed[paper_id]["title"]
-                    paper_stub["authors"] = result_feed[paper_id]["authors"]
-                    paper_stub["date_published"] = result_feed[paper_id]["published"]
-                    paper_stub["date_updated"] = result_feed[paper_id]["updated"]
+
+                    try:
+                        arxiv_info = result_feed[paper_id]
+                    except KeyError as e:
+                        logging.error(f"Error fetching arxiv info for {paper_id}: {e}")
+                        print(result_feed.keys(), paper_id)
+                        continue
+
+                    paper_stub["title"] = arxiv_info["title"]
+                    paper_stub["authors"] = arxiv_info["authors"]
+                    paper_stub["date_published"] = arxiv_info["published"]
+                    paper_stub["date_updated"] = arxiv_info["updated"]
+
                     reading_list["papers"][paper_id] = paper_stub
         
         # Dump the data every now and then to be able to resume it
-        os.makedirs(session_id, exist_ok=True)
-        json.dump(reading_list, open(os.path.join(session_id, "reading_list.json"), "w"), indent=2)
+        os.makedirs(os.path.join("reports", session_id), exist_ok=True)
+        json.dump(reading_list, open(os.path.join("reports", session_id, "reading_list.json"), "w"), indent=2)
 
         # Read each paper
         reading_list = read_papers(reading_list)
@@ -339,6 +352,9 @@ if __name__ == "__main__":
     report += references
 
     logging.info("Generating report")
-    with open(f"{session_id}/REPORT.md", "w") as f:
+
+    report_path = os.path.join("reports", session_id, "REPORT.md")
+
+    with open(report_path, "w") as f:
         f.write(report)
     logging.info(f"Reseach based on {len(reading_list['papers'])} papers complete.")
