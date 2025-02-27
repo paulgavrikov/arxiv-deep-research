@@ -1,8 +1,7 @@
 # arxiv-deep-research
 
-<div style="text-align: center;">
-    <img src="./assets/header.jpg" width="50%">
-</div>
+
+<img src="./assets/arxiv_deep_research.drawio.png" width="100%">
 
 
 This is a "Deep Research"-style agent, that attempts to generate a report answering a given research question using papers published on arxiv.org. This is achieved via API calls to the Google GenAI endpoint (Gemini or Gemma).
@@ -44,6 +43,7 @@ python arxiv_research.py -resume <PATH_TO_SESSION>/reading_list.json
 - ["What are the latest trends in adversarial robustness for image classification? Only consider papers from the last 2 years."](examples/20250224_163459/REPORT.md)
 - ["signal processing flaws of convolutional neural networks"](examples/20250224_234127/REPORT.md)
 - ["What is the best kernel size for convolutional neural networks?"](examples/20250226_222918/REPORT.md)
+- ["How do I design a LLM-based research assistant?"](examples/20250227_002520/REPORT.md)
 
 ## Known issues
 - Poor error handling, especially when API calls or PDF downloads fail
