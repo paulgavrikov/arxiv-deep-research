@@ -48,6 +48,7 @@ python arxiv_research.py -resume <PATH_TO_SESSION>/reading_list.json
 ## Known issues
 - Poor error handling, especially when API calls or PDF downloads fail
 - Only works with Gemini
+- Slow! This is mostly because the PDF extractor can be very slow but also sequential Gemini calls (to avoid hitting rate limits).
 - Output path not configurable
 - Gemini may hallucinate paper ID's that do not exist, which currently results in a crash due to a failures in lookups
 - Citation keys may be hallucinated
