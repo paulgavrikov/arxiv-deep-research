@@ -39,8 +39,8 @@ python arxiv_research.py -resume <PATH_TO_SESSION>/reading_list.json
 
 ## Example reports
 
-- ["How do I make very small LVLMs that generalize well?"](examples/20250225_012735//REPORT.md)
-- ["What are the latest trends in adversarial robustness for image classification? Only consider papers from the last 2 years."](examples/20250224_163459/REPORT.md)
+- ["How do I make very small LVLMs that generalize well?"](examples/20250225_012735/REPORT.md)
+- ["What are the latest trends in adversarial robustness for image classification? Only consider papers from the last 2 years." (created with an earlier version)](examples/20250224_163459/REPORT.md)
 - ["signal processing flaws of convolutional neural networks"](examples/20250224_234127/REPORT.md)
 - ["What is the best kernel size for convolutional neural networks?"](examples/20250226_222918/REPORT.md)
 - ["How do I design a LLM-based research assistant?"](examples/20250227_002520/REPORT.md)
