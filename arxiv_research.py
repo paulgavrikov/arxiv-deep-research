@@ -185,14 +185,15 @@ def llm_verify_complete(reading_list):
     )
 
     response = generate_response(prompt_verify_results)
+
     verification = json.loads(extract_code(response))
     complete = verification["information_complete"] == "yes"
+    logging.info(verification['rationale'])
+    queries_to_run = None
     if not complete:
         queries_to_run = verification["additional_queries"]
         logging.info(f"Additional queries requested: {queries_to_run}")
-        logging.info(f"Explanation: {verification['rationale']}")
-    else:
-        logging.info("Information complete")
+
     return complete, queries_to_run
 
 
